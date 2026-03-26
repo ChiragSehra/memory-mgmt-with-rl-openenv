@@ -1,4 +1,7 @@
 
+# Claude Code worktrees and session data
+.claude/
+
 # Beads / Dolt files (added by bd init)
 .dolt/
 *.db
