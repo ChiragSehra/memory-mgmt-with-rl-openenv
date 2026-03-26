@@ -46,32 +46,27 @@ export_rollouts_jsonl(rollouts, "rollouts.jsonl")
 
 ## Non-Interactive Shell Commands
 
-**ALWAYS use non-interactive flags** to avoid hanging on confirmation prompts.
+**ALWAYS use non-interactive flags** with file operations to avoid hanging on confirmation prompts.
 
+Shell commands like `cp`, `mv`, and `rm` may be aliased to include `-i` (interactive) mode on some systems, causing the agent to hang indefinitely waiting for y/n input.
+
+**Use these forms instead:**
 ```bash
-cp -f source dest       # NOT: cp source dest
-mv -f source dest       # NOT: mv source dest
-rm -f file              # NOT: rm file
-rm -rf directory        # NOT: rm -r directory
+# Force overwrite without prompting
+cp -f source dest           # NOT: cp source dest
+mv -f source dest           # NOT: mv source dest
+rm -f file                  # NOT: rm file
+
+# For recursive operations
+rm -rf directory            # NOT: rm -r directory
+cp -rf source dest          # NOT: cp -r source dest
 ```
 
-Other commands: `apt-get -y`, `HOMEBREW_NO_AUTO_UPDATE=1 brew ...`, `ssh -o BatchMode=yes`
-
-## Session Completion
-
-**Work is NOT complete until `git push` succeeds.**
-
-1. File issues for any remaining work
-2. Run tests: `python -m unittest tests/test_core.py -v`
-3. Update issue status (`bd close <id>` for finished work)
-4. Push everything:
-   ```bash
-   git pull --rebase
-   bd dolt push
-   git push
-   git status   # Must show "up to date with origin"
-   ```
-5. Provide handoff context for next session
+**Other commands that may prompt:**
+- `scp` - use `-o BatchMode=yes` for non-interactive
+- `ssh` - use `-o BatchMode=yes` to fail instead of prompting
+- `apt-get` - use `-y` flag
+- `brew` - use `HOMEBREW_NO_AUTO_UPDATE=1` env var
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
 ## Beads Issue Tracker
